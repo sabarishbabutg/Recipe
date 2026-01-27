@@ -43,7 +43,6 @@ sap.ui.define([
 		},
 
 		fnRouter: function() {
-<<<<<<< HEAD
 			
 			// added by sabarish 20.11.2025
 			// var oVisModel = new sap.ui.model.json.JSONModel({
