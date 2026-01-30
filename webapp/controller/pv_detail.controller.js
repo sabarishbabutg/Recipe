@@ -417,7 +417,7 @@ sap.ui.define([
 
 			if (["ID_PV_VERID", "ID_PV_STLAL"].includes(that.selectedField)) {
 				oPayload.FieldNam1 = "MATNR";
-				oPayload.Value1 = Matnr.toString().padStart(18, "0");
+				oPayload.Value1 =(/^\d+$/.test(Matnr)) ? ("000000000000000000" + Matnr).slice(-18) : Matnr;
 				oPayload.FieldNam2 = "WERKS";
 				oPayload.Value2 = Werks.toString().padStart(4, "0");
 			} else if (["ID_PV_ELPRO", "ID_PV_ALORT", "ID_PV_PRVBE", "ID_PV_TSA_PRVBE"].includes(that.selectedField)) {
@@ -429,7 +429,7 @@ sap.ui.define([
 
 			oModel.create("/SearchHelpSet", oPayload, {
 				success: function(oData) {
-					if (oData.MsgType === "E") {
+					if (oData.MsgType === "I") {
 						ErrorHandler.showCustomSnackbar(oData.Message, "Error", that);
 						return;
 					}
@@ -820,7 +820,7 @@ sap.ui.define([
 
 			if (["ID_PV_VERID", "ID_PV_STLAL"].includes(that.selectedField)) {
 				oPayload.FieldNam1 = "MATNR";
-				oPayload.Value1 = Matnr.toString().padStart(18, "0");
+				oPayload.Value1 = (/^\d+$/.test(Matnr)) ? ("000000000000000000" + Matnr).slice(-18) : Matnr;
 				oPayload.FieldNam2 = "WERKS";
 				oPayload.Value2 = Werks.toString().padStart(4, "0");
 			} else if (["ID_PV_ELPRO", "ID_PV_ALORT", "ID_PV_PRVBE", "ID_PV_TSA_PRVBE"].includes(that.selectedField)) {
@@ -1188,13 +1188,14 @@ sap.ui.define([
 		},
 
 		fnNavBack: function() {
+			var that = this;
 			var oPopupModel = new sap.ui.model.json.JSONModel({
 				title: "Information",
 				text: "Do you Want to exit this Process? once exit all data will be Refreshed",
 				negativeButton: "Cancel",
-				negativeIcon: "Image/Cancel.svg",
+				negativeIcon: that.getView().getModel("JM_ImageModel").getProperty("/path") + "Cancel.svg",
 				positiveButton: "Proceed",
-				positiveIcon: "Image/Apply.svg",
+				positiveIcon: that.getView().getModel("JM_ImageModel").getProperty("/path") + "Apply.svg",
 				Indicator: "PV_BACK"
 			});
 			// Set model with name
@@ -1417,7 +1418,7 @@ sap.ui.define([
 		},
 
 		fnDeleteFrag: function() {
-
+			var that = this;
 			var oTable = this.byId("idMaterialComTable");
 			var aSelectedIndices = oTable.getSelectedIndices();
 
@@ -1429,9 +1430,9 @@ sap.ui.define([
 				title: "Information",
 				text: "Do you want to delete selected rows ?",
 				negativeButton: "Cancel",
-				negativeIcon: "Image/Cancel.svg",
+				negativeIcon: that.getView().getModel("JM_ImageModel").getProperty("/path") + "Cancel.svg",
 				positiveButton: "Proceed",
-				positiveIcon: "Image/Apply.svg",
+				positiveIcon: that.getView().getModel("JM_ImageModel").getProperty("/path") + "Apply.svg",
 				Indicator: "PV_DELETE"
 			});
 			// Set model with name
